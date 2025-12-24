@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法鼓山古風紅燈籠祝福</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f8f1e7;
+        font-family: "標楷體", "DFKai-SB", serif;
+        text-align: center;
+    }
+
+    h2 {
+        margin-top: 16px;
+    }
+
+    .container {
+        max-width: 420px;
+        margin: auto;
+        padding: 10px;
+    }
+
+    input {
+        width: 90%;
+        font-size: 18px;
+        padding: 8px;
+        margin: 6px 0;
+        font-family: "標楷體", "DFKai-SB", serif;
+    }
+
+    button {
+        width: 45%;
+        font-size: 18px;
+        padding: 10px;
+        margin: 8px 2%;
+        border: none;
+        border-radius: 6px;
+        background: #c1121f;
+        color: white;
+    }
+
+    canvas {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+        background: #f8f1e7;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>🏮 法鼓山祝福紅燈籠 🏮</h2>
+
+<div class="container">
+    <input id="name" placeholder="輸入姓名（例：小毓）">
+    <input id="blessing" placeholder="祝福語（3–5字）">
+
+    <div>
+        <button onclick="drawLantern()">產生</button>
+        <button onclick="download()">下載</button>
+    </div>
+
+    <canvas id="canvas" width="600" height="800"></canvas>
+</div>
+
+<script>
+const logo = new Image();
+logo.src = "dharma_logo.png"; // 法鼓山山徽
+
+function drawLantern() {
+    const name = document.getElementById("name").value;
+    const blessing = document.getElementById("blessing").value;
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // 清空
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 背景
+    ctx.fillStyle = "#f8f1e7";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 掛繩
+    ctx.strokeStyle = "#6c584c";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(300, 40);
+    ctx.lineTo(300, 140);
+    ctx.stroke();
+
+    // 燈籠主體
+    ctx.fillStyle = "#c1121f";
+    ctx.beginPath();
+    ctx.ellipse(300, 420, 210, 270, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 金邊
+    ctx.fillStyle = "#f4c430";
+    ctx.fillRect(150, 150, 300, 28);
+    ctx.fillRect(150, 660, 300, 28);
+
+    // 法鼓山山徽
+    if (logo.complete) {
+        ctx.drawImage(logo, 260, 180, 80, 80);
+    }
+
+    // 祝福語（直排）
+    ctx.fillStyle = "white";
+    ctx.font = "48px DFKai-SB";
+    let yBless = 300;
+    for (let char of blessing) {
+        ctx.fillText(char, 285, yBless);
+        yBless += 60;
+    }
+
+    // 姓名（直排）
+    ctx.font = "36px DFKai-SB";
+    let yName = 320;
+    for (let char of name) {
+        ctx.fillText(char, 345, yName);
+        yName += 50;
+    }
+}
+
+function download() {
+    const canvas = document.getElementById("canvas");
+    const link = document.createElement("a");
+    link.download = "法鼓山祝福紅燈籠.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
+</script>
+
+</body>
+</html>
